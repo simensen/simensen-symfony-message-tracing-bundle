@@ -24,8 +24,10 @@ trait PushCorrelationBehavior
 
             $this->logForAudit($trace, $envelope);
         } else {
-            $trace = Trace::start();
+            $trace ??= Trace::start();
 
+            // @TODO Only push if stack is empty?
+            // @TODO Only push if $trace isn't already at the top of the stack?
             $this->messageTracingStack->push($trace);
 
             $this->logForAudit($trace, $envelope);

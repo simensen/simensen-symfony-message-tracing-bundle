@@ -1,0 +1,37 @@
+{
+  "name": "simensen/symfony-message-tracing-bundle",
+  "description": "Causation and Correlation tracing for Symfony Messenger buses",
+  "license": "MIT",
+  "type": "symfony-bundle",
+  "require": {
+    "php": ">=8.2",
+    "symfony/config": "^6.4 || ^7.0",
+    "symfony/dependency-injection": "^6.4 || ^7.0",
+    "symfony/http-kernel": "^6.4 || ^7.0",
+    "symfony/uid": "^6.4 || ^7.0"
+  },
+  "require-dev": {
+    "ergebnis/composer-normalize": "^2.45",
+    "symfony/dotenv": "^6.4 || ^7.0",
+    "symfony/framework-bundle": "^6.4 || ^7.0",
+    "symfony/yaml": "^6.4"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Simensen\\SymfonyMessageTracingBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Simensen\\SymfonyMessageTracingBundle\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    },
+    "sort-packages": true
+  }
+}

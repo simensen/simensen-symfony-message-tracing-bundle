@@ -1,34 +1,42 @@
 .PHONY: it
-it: tools vendor
+it: tools vendor cs phpstan tests
 
 .PHONY: tools
 tools: phive
 
 .PHONY: cs
-cs: yamllint php-cs-fixer ## Lints, normalizes, and fixes code style issues
-	composer normalize
+cs: php-cs-fixer-fix ## Lints, normalizes, and fixes code style issues
 
-.PHONY: yamllint
-yamllint: phive
-	yamllint -c .yamllint.yaml --strict .
-
-.PHONY: php-cs-fixer
-php-cs-fixer: phive vendor
+.PHONY: php-cs-fixer-fix
+php-cs-fixer-fix: phive vendor
 	php-cs-fixer fix
 
 .PHONY: phive
 phive: ## Installs tools via PHIVE
 	PHIVE_HOME=.build/phive phive install
 
-phpstan: ## Runs phpstan against example and library
-	phpstan analyse --memory-limit 1G -l9 src
+.PHONY: phive phpstan
+phpstan: vendor ## Runs phpstan against fixtures and library
+	phpstan analyse --memory-limit 1G -l9 src -v
+
+.PHONY: dependency-analysis
+dependency-analysis: phive vendor ## Runs a dependency analysis with maglnet/composer-require-checker
+	composer-require-checker check --config-file=$(shell pwd)/composer-require-checker.json --verbose
 
 .PHONY: help
 help: ## Displays this list of targets with descriptions
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
-test: phive vendor ## Tests code
-	phpunit
+.PHONY: tests
+tests: phpunit ## Tests code
+
+.PHONY: phpunit
+phpunit: vendor
+	./vendor/bin/phpunit
+
+.PHONY: clover
+clover: vendor
+	XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover=coverage.clover
 
 vendor: composer.json
 	composer validate --strict

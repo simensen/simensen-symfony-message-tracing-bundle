@@ -5,13 +5,17 @@
   "type": "symfony-bundle",
   "require": {
     "php": ">=8.2",
+    "simensen/message-tracing": "^0.1@dev",
+    "simensen/symfony-messenger-message-tracing": "^0.1@dev",
     "symfony/config": "^6.4 || ^7.0",
     "symfony/dependency-injection": "^6.4 || ^7.0",
     "symfony/http-kernel": "^6.4 || ^7.0",
+    "symfony/messenger": "^6.4 || ^7.0",
     "symfony/uid": "^6.4 || ^7.0"
   },
   "require-dev": {
     "ergebnis/composer-normalize": "^2.45",
+    "phpunit/phpunit": "^11.2.8",
     "symfony/dotenv": "^6.4 || ^7.0",
     "symfony/framework-bundle": "^6.4 || ^7.0",
     "symfony/yaml": "^6.4"
@@ -36,11 +40,21 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-main": "0.0.x-dev"
+      "dev-main": "0.1.x-dev"
     },
     "composer-normalize": {
       "indent-size": 2,
       "indent-style": "space"
+    }
+  },
+  "repositories": {
+    "simensen-symfony-messenger-message-tracing": {
+      "type": "vcs",
+      "url": "https://github.com/simensen/simensen-symfony-messenger-message-tracing.git"
+    },
+    "simensen-message-tracing": {
+      "type": "vcs",
+      "url": "https://github.com/simensen/simensen-message-tracing.git"
     }
   }
 }

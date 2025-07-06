@@ -104,14 +104,16 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
         $causationMiddlewareDefinition = (new Definition(CausationMiddleware::class))
             ->setAutowired(true)
             ->setAutoconfigured(true)
-            ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.causation'));
+            ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.causation'))
+            ->addTag('messenger.middleware', ['priority' => 100]);
 
         $builder->setDefinition('simensen_message_tracing.middleware.causation', $causationMiddlewareDefinition);
 
         $correlationMiddlewareDefinition = (new Definition(CorrelationMiddleware::class))
             ->setAutowired(true)
             ->setAutoconfigured(true)
-            ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.correlation'));
+            ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.correlation'))
+            ->addTag('messenger.middleware', ['priority' => 100]);
 
         $builder->setDefinition('simensen_message_tracing.middleware.correlation', $correlationMiddlewareDefinition);
     }

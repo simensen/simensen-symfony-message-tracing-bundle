@@ -21,7 +21,11 @@ Based on the PRD requirements for Phase 1, here are the high-level tasks:
   - [x] 1.2 Implement CausationMiddleware class with MiddlewareInterface
   - [x] 1.3 Implement CorrelationMiddleware class with MiddlewareInterface
   - [x] 1.4 Add proper constructor dependency injection for envelope managers
-- [ ] 2.0 Fix Bundle Service Registration  
+- [x] 2.0 Fix Bundle Service Registration
+  - [x] 2.1 Register CausationMiddleware as a service
+  - [x] 2.2 Register CorrelationMiddleware as a service  
+  - [x] 2.3 Configure services to use existing envelope managers
+  - [x] 2.4 Clean up commented code from bundle class
 - [ ] 3.0 Implement Automatic Middleware Registration
 - [ ] 4.0 Ensure Proper Service Aliasing
 - [ ] 5.0 Validate Integration with Symfony Messenger

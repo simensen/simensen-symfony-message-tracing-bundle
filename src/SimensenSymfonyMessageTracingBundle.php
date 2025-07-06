@@ -9,6 +9,8 @@ use Simensen\MessageTracing\TracedContainerManager;
 use Simensen\MessageTracing\TraceGenerator;
 use Simensen\MessageTracing\TraceIdentityGenerator;
 use Simensen\MessageTracing\TraceStack;
+use Simensen\SymfonyMessageTracingBundle\Middleware\CausationMiddleware;
+use Simensen\SymfonyMessageTracingBundle\Middleware\CorrelationMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CausationTracedEnvelopeManager;
 use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CorrelationTracedEnvelopeManager;
 use Simensen\SymfonyMessenger\MessageTracing\Stamp\MessageTracingStampGenerator;
@@ -16,6 +18,7 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\Uid\Uuid;
 
@@ -97,16 +100,19 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
             false
         );
 
-        // // trace generator
-        // // trace identity generator
-        // $traceStackServiceId = 'simensen_message_tracing.trace_stack';
-        //
-        // $traceStackServiceDefinition = new Definition($config['trace_stack']);
-        //
-        // $builder->setDefinition($traceStackServiceId, $traceStackServiceDefinition);
-        //
-        // $builder->addAliases([
-        //     TraceStack::class => $traceStackServiceId,
-        // ]);
+        // Register actual middleware services
+        $causationMiddlewareDefinition = (new Definition(CausationMiddleware::class))
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+            ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.causation'));
+
+        $builder->setDefinition('simensen_message_tracing.middleware.causation', $causationMiddlewareDefinition);
+
+        $correlationMiddlewareDefinition = (new Definition(CorrelationMiddleware::class))
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+            ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.correlation'));
+
+        $builder->setDefinition('simensen_message_tracing.middleware.correlation', $correlationMiddlewareDefinition);
     }
 }

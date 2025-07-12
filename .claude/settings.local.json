@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(./vendor/bin/phpunit:*)",
+      "Bash(make:*)"
+    ],
+    "deny": []
+  }
+}

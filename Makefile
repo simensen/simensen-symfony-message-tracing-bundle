@@ -7,6 +7,10 @@ tools: phive
 .PHONY: cs
 cs: php-cs-fixer-fix ## Lints, normalizes, and fixes code style issues
 
+.PHONY: cs-check
+cs-check: phive vendor ## Checks code style without fixing
+	php-cs-fixer fix --dry-run --diff
+
 .PHONY: php-cs-fixer-fix
 php-cs-fixer-fix: phive vendor
 	php-cs-fixer fix

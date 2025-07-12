@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Simensen\SymfonyMessageTracingBundle;
 
-use Simensen\MessageTracing\Adapter\DefaultTraceStack;
-use Simensen\MessageTracing\TracedContainerManager;
-use Simensen\MessageTracing\TraceGenerator;
-use Simensen\MessageTracing\TraceIdentityGenerator;
-use Simensen\MessageTracing\TraceStack;
+use Simensen\MessageTracing\Trace\TraceGenerator;
+use Simensen\MessageTracing\TracedContainerManager\TracedContainerManager;
+use Simensen\MessageTracing\TraceIdentity\TraceIdentityGenerator;
+use Simensen\MessageTracing\TraceStack\Adapter\DefaultTraceStack;
+use Simensen\MessageTracing\TraceStack\TraceStack;
 use Simensen\SymfonyMessageTracingBundle\Middleware\CausationMiddleware;
 use Simensen\SymfonyMessageTracingBundle\Middleware\CorrelationMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CausationTracedEnvelopeManager;
 use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CorrelationTracedEnvelopeManager;
-use Simensen\SymfonyMessenger\MessageTracing\Stamp\MessageTracingStampGenerator;
+use Simensen\SymfonyMessenger\MessageTracing\Stamp\SymfonyUidMessageTracingStampGenerator;
+use Simensen\SymfonyMessenger\MessageTracing\TraceIdentity\UuidTraceIdentityGenerator;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -28,7 +29,7 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
     {
         $definition->rootNode()
             ->children()
-                ->scalarNode('trace_generator')->defaultValue(MessageTracingStampGenerator::class)->end()
+                ->scalarNode('trace_generator')->defaultValue(SymfonyUidMessageTracingStampGenerator::class)->end()
                 ->scalarNode('trace_stack')->defaultValue(DefaultTraceStack::class)->end()
                 ->arrayNode('trace_identity')->addDefaultsIfNotSet()
                     ->children()
@@ -78,12 +79,12 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
         $makeService('trace_generator', TraceGenerator::class);
 
         $traceIdentityType = $config['trace_identity']['type'];
-        $traceIdentityGenerator = $config['trace_identity']['generator'] ?? MessageTracingStampGenerator::class;
+        $traceIdentityGenerator = $config['trace_identity']['generator'] ?? UuidTraceIdentityGenerator::class;
 
         $makeService(
             'identity.generator',
             TraceIdentityGenerator::class,
-            $config['trace_identity']['generator']
+            $traceIdentityGenerator
         );
 
         $makeService(

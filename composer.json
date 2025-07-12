@@ -20,6 +20,7 @@
     "phpunit/phpunit": "^11.2.8",
     "symfony/dotenv": "^6.4 || ^7.0",
     "symfony/framework-bundle": "^6.4 || ^7.0",
+    "symfony/runtime": "^6.4 || ^7.0",
     "symfony/yaml": "^6.4"
   },
   "minimum-stability": "stable",
@@ -36,7 +37,8 @@
   },
   "config": {
     "allow-plugins": {
-      "ergebnis/composer-normalize": true
+      "ergebnis/composer-normalize": true,
+      "symfony/runtime": true
     },
     "sort-packages": true
   },

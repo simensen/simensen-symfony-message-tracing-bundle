@@ -74,10 +74,31 @@ class BundleConfigurationTest extends KernelTestCase
     public function testTraceIdentityConfiguration(): void
     {
         $config = [
-            'trace_identity' => [
-                'type' => 'Symfony\\Component\\Uid\\Uuid',
-                'generator' => 'Simensen\\SymfonyMessageTracingBundle\\Tests\\Fixtures\\MockTraceIdentityGenerator',
-            ],
+            'trace_identity_generator' => 'Simensen\\SymfonyMessageTracingBundle\\Tests\\Fixtures\\MockTraceIdentityGenerator',
+        ];
+        $kernel = self::createKernel(['config' => $config]);
+        $kernel->boot();
+        $container = $kernel->getContainer();
+
+        $this->assertTrue($container->has('simensen_message_tracing.identity.generator'));
+    }
+
+    public function testUuidTraceIdentityConfiguration(): void
+    {
+        $config = [
+            'trace_identity_generator' => 'uuid',
+        ];
+        $kernel = self::createKernel(['config' => $config]);
+        $kernel->boot();
+        $container = $kernel->getContainer();
+
+        $this->assertTrue($container->has('simensen_message_tracing.identity.generator'));
+    }
+
+    public function testUlidTraceIdentityConfiguration(): void
+    {
+        $config = [
+            'trace_identity_generator' => 'ulid',
         ];
         $kernel = self::createKernel(['config' => $config]);
         $kernel->boot();

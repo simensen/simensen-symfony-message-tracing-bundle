@@ -37,10 +37,7 @@ class SimensenSymfonyMessageTracingBundleTest extends TestCase
         $config = [
             'trace_generator' => 'Simensen\\SymfonyMessenger\\MessageTracing\\Stamp\\SymfonyUidMessageTracingStampGenerator',
             'trace_stack' => 'Simensen\\MessageTracing\\TraceStack\\Adapter\\DefaultTraceStack',
-            'trace_identity' => [
-                'type' => 'Symfony\\Component\\Uid\\Uuid',
-                'generator' => 'Simensen\\SymfonyMessenger\\MessageTracing\\TraceIdentity\\UuidTraceIdentityGenerator',
-            ],
+            'trace_identity_generator' => 'uuid',
             'messenger' => [
                 'middleware' => [
                     'causation' => 'simensen_message_tracing.messenger.middleware.causation',
@@ -70,10 +67,7 @@ class SimensenSymfonyMessageTracingBundleTest extends TestCase
         $config = [
             'trace_generator' => 'CustomTraceGenerator',
             'trace_stack' => 'CustomTraceStack',
-            'trace_identity' => [
-                'type' => 'CustomUuid',
-                'generator' => 'CustomGenerator',
-            ],
+            'trace_identity_generator' => 'CustomGenerator',
         ];
 
         $container = new ContainerBuilder();
@@ -97,10 +91,7 @@ class SimensenSymfonyMessageTracingBundleTest extends TestCase
         $config = [
             'trace_generator' => 'MockGenerator',
             'trace_stack' => 'MockStack',
-            'trace_identity' => [
-                'type' => 'MockUuid',
-                'generator' => 'MockGenerator',
-            ],
+            'trace_identity_generator' => 'MockGenerator',
         ];
 
         $container = new ContainerBuilder();
@@ -129,10 +120,7 @@ class SimensenSymfonyMessageTracingBundleTest extends TestCase
         $config = [
             'trace_generator' => 'MockGenerator',
             'trace_stack' => 'MockStack',
-            'trace_identity' => [
-                'type' => 'MockUuid',
-                'generator' => 'MockGenerator',
-            ],
+            'trace_identity_generator' => 'MockGenerator',
         ];
 
         $container = new ContainerBuilder();

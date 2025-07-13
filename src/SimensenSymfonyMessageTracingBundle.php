@@ -14,6 +14,7 @@ use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CorrelationTracedEn
 use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CausationTracingMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CorrelationTracingMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\Stamp\SymfonyUidMessageTracingStampGenerator;
+use Simensen\SymfonyMessenger\MessageTracing\TraceIdentity\UlidTraceIdentityGenerator;
 use Simensen\SymfonyMessenger\MessageTracing\TraceIdentity\UuidTraceIdentityGenerator;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,7 +22,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\Uid\Uuid;
 
 class SimensenSymfonyMessageTracingBundle extends AbstractBundle
 {
@@ -31,12 +31,7 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
             ->children()
                 ->scalarNode('trace_generator')->defaultValue(SymfonyUidMessageTracingStampGenerator::class)->end()
                 ->scalarNode('trace_stack')->defaultValue(DefaultTraceStack::class)->end()
-                ->arrayNode('trace_identity')->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('type')->defaultValue(Uuid::class)->end()
-                        ->scalarNode('generator')->end()
-                    ->end()
-                ->end()
+                ->scalarNode('trace_identity_generator')->defaultValue('uuid')->end()
                 ->arrayNode('messenger')->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('middleware')->addDefaultsIfNotSet()
@@ -78,8 +73,12 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
         $makeService('trace_stack', TraceStack::class);
         $makeService('trace_generator', TraceGenerator::class);
 
-        $traceIdentityType = $config['trace_identity']['type'];
-        $traceIdentityGenerator = $config['trace_identity']['generator'] ?? UuidTraceIdentityGenerator::class;
+        // Resolve trace identity generator based on configuration
+        $traceIdentityGenerator = match ($config['trace_identity_generator']) {
+            'uuid' => UuidTraceIdentityGenerator::class,
+            'ulid' => UlidTraceIdentityGenerator::class,
+            default => $config['trace_identity_generator'], // Allow custom FQCN
+        };
 
         $makeService(
             'identity.generator',

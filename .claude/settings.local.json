@@ -4,7 +4,11 @@
       "Bash(ls:*)",
       "Bash(mkdir:*)",
       "Bash(./vendor/bin/phpunit:*)",
-      "Bash(make:*)"
+      "Bash(make:*)",
+      "Bash(php:*)",
+      "Bash(find:*)",
+      "Bash(env)",
+      "Bash(composer show:*)"
     ],
     "deny": []
   }

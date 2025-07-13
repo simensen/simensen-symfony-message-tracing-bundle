@@ -9,10 +9,10 @@ use Simensen\MessageTracing\TracedContainerManager\TracedContainerManager;
 use Simensen\MessageTracing\TraceIdentity\TraceIdentityGenerator;
 use Simensen\MessageTracing\TraceStack\Adapter\DefaultTraceStack;
 use Simensen\MessageTracing\TraceStack\TraceStack;
-use Simensen\SymfonyMessageTracingBundle\Middleware\CausationMiddleware;
-use Simensen\SymfonyMessageTracingBundle\Middleware\CorrelationMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CausationTracedEnvelopeManager;
 use Simensen\SymfonyMessenger\MessageTracing\EnvelopeManager\CorrelationTracedEnvelopeManager;
+use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CausationTracingMiddleware;
+use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CorrelationTracingMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\Stamp\SymfonyUidMessageTracingStampGenerator;
 use Simensen\SymfonyMessenger\MessageTracing\TraceIdentity\UuidTraceIdentityGenerator;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -102,7 +102,7 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
         );
 
         // Register actual middleware services
-        $causationMiddlewareDefinition = (new Definition(CausationMiddleware::class))
+        $causationMiddlewareDefinition = (new Definition(CausationTracingMiddleware::class))
             ->setAutowired(true)
             ->setAutoconfigured(true)
             ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.causation'))
@@ -110,7 +110,7 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
 
         $builder->setDefinition('simensen_message_tracing.middleware.causation', $causationMiddlewareDefinition);
 
-        $correlationMiddlewareDefinition = (new Definition(CorrelationMiddleware::class))
+        $correlationMiddlewareDefinition = (new Definition(CorrelationTracingMiddleware::class))
             ->setAutowired(true)
             ->setAutoconfigured(true)
             ->addArgument(new Reference('simensen_message_tracing.messenger.middleware.correlation'))

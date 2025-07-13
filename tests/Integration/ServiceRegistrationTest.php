@@ -9,8 +9,8 @@ use Simensen\MessageTracing\TraceStack\Adapter\DefaultTraceStack;
 use Simensen\MessageTracing\Trace\TraceGenerator;
 use Simensen\MessageTracing\TraceIdentity\TraceIdentityGenerator;
 use Simensen\MessageTracing\TraceStack\TraceStack;
-use Simensen\SymfonyMessageTracingBundle\Middleware\CausationMiddleware;
-use Simensen\SymfonyMessageTracingBundle\Middleware\CorrelationMiddleware;
+use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CausationTracingMiddleware;
+use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CorrelationTracingMiddleware;
 use Simensen\SymfonyMessageTracingBundle\SimensenSymfonyMessageTracingBundle;
 use Simensen\SymfonyMessenger\MessageTracing\Stamp\SymfonyUidMessageTracingStampGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -60,8 +60,8 @@ class ServiceRegistrationTest extends KernelTestCase
 
         $this->assertInstanceOf(DefaultTraceStack::class, $container->get('simensen_message_tracing.trace_stack'));
         $this->assertInstanceOf(SymfonyUidMessageTracingStampGenerator::class, $container->get('simensen_message_tracing.trace_generator'));
-        $this->assertInstanceOf(CausationMiddleware::class, $container->get('simensen_message_tracing.middleware.causation'));
-        $this->assertInstanceOf(CorrelationMiddleware::class, $container->get('simensen_message_tracing.middleware.correlation'));
+        $this->assertInstanceOf(CausationTracingMiddleware::class, $container->get('simensen_message_tracing.middleware.causation'));
+        $this->assertInstanceOf(CorrelationTracingMiddleware::class, $container->get('simensen_message_tracing.middleware.correlation'));
     }
 
     public function testServiceAliasesAreRegistered(): void
@@ -126,8 +126,8 @@ class ServiceRegistrationTest extends KernelTestCase
         $causationMiddleware = $container->get('simensen_message_tracing.middleware.causation');
         $correlationMiddleware = $container->get('simensen_message_tracing.middleware.correlation');
 
-        $this->assertInstanceOf(CausationMiddleware::class, $causationMiddleware);
-        $this->assertInstanceOf(CorrelationMiddleware::class, $correlationMiddleware);
+        $this->assertInstanceOf(CausationTracingMiddleware::class, $causationMiddleware);
+        $this->assertInstanceOf(CorrelationTracingMiddleware::class, $correlationMiddleware);
 
         // Check that middleware have their dependencies injected
         $this->assertNotNull($causationMiddleware);

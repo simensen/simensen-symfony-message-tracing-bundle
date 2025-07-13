@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Simensen\SymfonyMessageTracingBundle\Tests\Functional;
 
-use Simensen\SymfonyMessageTracingBundle\Middleware\CausationMiddleware;
-use Simensen\SymfonyMessageTracingBundle\Middleware\CorrelationMiddleware;
+use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CausationTracingMiddleware;
+use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CorrelationTracingMiddleware;
 use Simensen\SymfonyMessageTracingBundle\SimensenSymfonyMessageTracingBundle;
 use Simensen\SymfonyMessageTracingBundle\Tests\Fixtures\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -36,8 +36,8 @@ class MiddlewareIntegrationTest extends KernelTestCase
         $causationMiddleware = $container->get('simensen_message_tracing.middleware.causation');
         $correlationMiddleware = $container->get('simensen_message_tracing.middleware.correlation');
 
-        $this->assertInstanceOf(CausationMiddleware::class, $causationMiddleware);
-        $this->assertInstanceOf(CorrelationMiddleware::class, $correlationMiddleware);
+        $this->assertInstanceOf(CausationTracingMiddleware::class, $causationMiddleware);
+        $this->assertInstanceOf(CorrelationTracingMiddleware::class, $correlationMiddleware);
     }
 
     public function testMiddlewareCanBeInstantiated(): void

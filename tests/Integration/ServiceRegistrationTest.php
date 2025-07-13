@@ -12,7 +12,7 @@ use Simensen\MessageTracing\TraceStack\TraceStack;
 use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CausationTracingMiddleware;
 use Simensen\SymfonyMessenger\MessageTracing\Messenger\Middleware\CorrelationTracingMiddleware;
 use Simensen\SymfonyMessageTracingBundle\SimensenSymfonyMessageTracingBundle;
-use Simensen\SymfonyMessenger\MessageTracing\Stamp\SymfonyUidMessageTracingStampGenerator;
+use Simensen\SymfonyMessenger\MessageTracing\Stamp\UuidMessageTracingStampGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -59,7 +59,7 @@ class ServiceRegistrationTest extends KernelTestCase
         $container = $kernel->getContainer();
 
         $this->assertInstanceOf(DefaultTraceStack::class, $container->get('simensen_message_tracing.trace_stack'));
-        $this->assertInstanceOf(SymfonyUidMessageTracingStampGenerator::class, $container->get('simensen_message_tracing.trace_generator'));
+        $this->assertInstanceOf(UuidMessageTracingStampGenerator::class, $container->get('simensen_message_tracing.trace_generator'));
         $this->assertInstanceOf(CausationTracingMiddleware::class, $container->get('simensen_message_tracing.middleware.causation'));
         $this->assertInstanceOf(CorrelationTracingMiddleware::class, $container->get('simensen_message_tracing.middleware.correlation'));
     }
@@ -75,7 +75,7 @@ class ServiceRegistrationTest extends KernelTestCase
         $this->assertTrue($container->has(TraceIdentityGenerator::class));
 
         $this->assertInstanceOf(DefaultTraceStack::class, $container->get(TraceStack::class));
-        $this->assertInstanceOf(SymfonyUidMessageTracingStampGenerator::class, $container->get(TraceGenerator::class));
+        $this->assertInstanceOf(UuidMessageTracingStampGenerator::class, $container->get(TraceGenerator::class));
     }
 
     public function testAutowiringAndAutoconfigurationAreEnabled(): void

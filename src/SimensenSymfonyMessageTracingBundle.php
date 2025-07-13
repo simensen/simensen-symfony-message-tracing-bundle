@@ -71,7 +71,15 @@ class SimensenSymfonyMessageTracingBundle extends AbstractBundle
         };
 
         $makeService('trace_stack', TraceStack::class);
-        $makeService('trace_generator', TraceGenerator::class);
+
+        // Auto-set trace_generator based on trace_identity_generator type
+        $traceGenerator = match ($config['trace_identity_generator']) {
+            'uuid' => 'Simensen\SymfonyMessenger\MessageTracing\Stamp\UuidMessageTracingStampGenerator',
+            'ulid' => 'Simensen\SymfonyMessenger\MessageTracing\Stamp\UlidMessageTracingStampGenerator',
+            default => $config['trace_generator'], // Use configured trace_generator for other types
+        };
+
+        $makeService('trace_generator', TraceGenerator::class, $traceGenerator);
 
         // Resolve trace identity generator based on configuration
         $traceIdentityGenerator = match ($config['trace_identity_generator']) {

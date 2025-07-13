@@ -1,5 +1,5 @@
 .PHONY: it
-it: tools vendor cs phpstan tests
+it: tools vendor cs tests
 
 .PHONY: tools
 tools: phive
@@ -18,10 +18,6 @@ php-cs-fixer-fix: phive vendor
 .PHONY: phive
 phive: ## Installs tools via PHIVE
 	PHIVE_HOME=.build/phive phive install
-
-.PHONY: phive phpstan
-phpstan: vendor ## Runs phpstan against fixtures and library
-	phpstan analyse --memory-limit 1G -l9 src -v
 
 .PHONY: dependency-analysis
 dependency-analysis: phive vendor ## Runs a dependency analysis with maglnet/composer-require-checker

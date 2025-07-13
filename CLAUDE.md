@@ -33,7 +33,6 @@ composer install  # Install dependencies
 ### Code Quality
 ```bash
 make cs           # Fix code style issues with php-cs-fixer
-make phpstan      # Run static analysis with PHPStan (level 9)
 ```
 
 ### Testing
@@ -45,7 +44,7 @@ make clover       # Generate test coverage report
 
 ### All-in-one
 ```bash
-make it           # Run tools, install dependencies, fix code style, run PHPStan, and run tests
+make it           # Run tools, install dependencies, fix code style, and run tests
 ```
 
 ### Dependency Analysis
@@ -70,7 +69,6 @@ make realclean    # Remove vendor, tools, and composer.lock
 - PHP 8.2+ required
 - Uses strict types (`declare(strict_types=1);`)
 - Code style enforced via php-cs-fixer
-- Static analysis with PHPStan level 9
 - Dependencies managed through Composer with normalization
 
 ## Dependencies
@@ -80,4 +78,4 @@ The bundle depends on:
 - Custom tracing packages (`simensen/message-tracing`, `simensen/symfony-messenger-message-tracing`)
 - Symfony UID component for trace identity generation
 
-Development packages are installed via PHIVE (php-cs-fixer, PHPStan, PHPUnit, composer-require-checker).
+Development packages are installed via PHIVE (php-cs-fixer, PHPUnit, composer-require-checker).

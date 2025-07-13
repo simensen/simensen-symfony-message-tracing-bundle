@@ -7,7 +7,7 @@ namespace Simensen\SymfonyMessageTracingBundle\Tests\Integration;
 use Simensen\MessageTracing\TraceStack\Adapter\DefaultTraceStack;
 use Simensen\SymfonyMessageTracingBundle\SimensenSymfonyMessageTracingBundle;
 use Simensen\SymfonyMessageTracingBundle\Tests\Fixtures\TestKernel;
-use Simensen\SymfonyMessenger\MessageTracing\Stamp\SymfonyUidMessageTracingStampGenerator;
+use Simensen\SymfonyMessenger\MessageTracing\Stamp\UuidMessageTracingStampGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Uuid;
 
@@ -44,7 +44,7 @@ class BundleConfigurationTest extends KernelTestCase
         $this->assertInstanceOf(DefaultTraceStack::class, $traceStack);
 
         $traceGenerator = $container->get('simensen_message_tracing.trace_generator');
-        $this->assertInstanceOf(SymfonyUidMessageTracingStampGenerator::class, $traceGenerator);
+        $this->assertInstanceOf(UuidMessageTracingStampGenerator::class, $traceGenerator);
     }
 
     public function testCustomTraceGeneratorConfiguration(): void
